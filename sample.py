@@ -12,8 +12,8 @@ import matplotlib      # pip install matplotlib + apt install python3-tk
 import pyplotter       # local import
 
 
-N = 11  # predict from this many days of data
-P = 60  # predict into this many days from onset
+N = 14  # predict from this many days of data
+P = 60  # predict this many days from onset
 
 
 DEATHS = [
@@ -33,7 +33,10 @@ DEATHS = [
     427,
     494,
     565,
-    636
+    638,
+    725,
+    813,
+    910
 ]
 
 
@@ -55,12 +58,11 @@ CASES = [
     20704,
     24630,
     28353,
-    30877
+    31532,
+    34963,
+    37549,
+    40536
 ]
-
-
-YDATA = DEATHS   # select: DEATHS | CASES
-TYPE = "deaths"  # select: "deaths" | "cases"
 
 
 def quadratic(x, a, b, c):
@@ -68,24 +70,25 @@ def quadratic(x, a, b, c):
 
 
 def main():
-    # extrapolate from observations
-    xdata = np.arange(0, len(YDATA))
-    xdata_extrapolated = np.arange(0, P+1)
-    ydata = np.array(YDATA)
-    popt, _ = scipy.optimize.curve_fit(quadratic, xdata[:N], ydata[:N])
-    pstr = f"prediction: ${popt[0]:.0f}x^2 {popt[1]:+.0f}x {popt[2]:+.0f}$"
-    # plot observed data points + prediction
-    fig = pyplotter.Figure(f"Cumulative {TYPE}")
-    fig.axes[0].scatter(xdata[:N], ydata[:N], color="blue", label="training data")
-    fig.axes[0].scatter(xdata[N:], ydata[N:], color="red", label="ground truth")
-    fig.axes[0].plot(xdata_extrapolated, quadratic(xdata_extrapolated, *popt), color="green", alpha=0.5, label=pstr)
-    # prettify the graph with ticks, grids, labels, etc.
-    fig.axes[0].xaxis.set_minor_locator(matplotlib.ticker.AutoMinorLocator(2))
-    fig.axes[0].yaxis.set_minor_locator(matplotlib.ticker.AutoMinorLocator(2))
-    fig.axes[0].set_xlabel("Days (starting from 2020-01-22)")
-    fig.axes[0].grid(which="both")
-    fig.axes[0].legend()
-    # make visible
+    fig = pyplotter.Figure(f"Cumulative cases and deaths", ncols=2)
+    for i, (title, ydata) in enumerate(zip(["Cases", "Deaths"], [CASES, DEATHS])):
+        # extrapolate with a second-degree polynomial
+        xdata = np.arange(0, len(ydata))
+        xdata_extrapolated = np.arange(0, P+1)
+        popt, _ = scipy.optimize.curve_fit(quadratic, xdata[:N], ydata[:N])
+        pstr = f"prediction: ${popt[0]:.0f}x^2 {popt[1]:+.0f}x {popt[2]:+.0f}$"
+        # plot the observed data points + prediction curve
+        fig.axes[i].scatter(xdata[:N], ydata[:N], color="blue", label=f"training data, N={N}")
+        fig.axes[i].scatter(xdata[N:], ydata[N:], color="red", label=f"ground truth, N={len(ydata) - N}")
+        fig.axes[i].plot(xdata_extrapolated, quadratic(xdata_extrapolated, *popt), color="green", alpha=0.5, label=pstr)
+        # prettify the graph with ticks, grids, labels, etc.
+        fig.axes[i].xaxis.set_minor_locator(matplotlib.ticker.AutoMinorLocator(4))
+        fig.axes[i].yaxis.set_minor_locator(matplotlib.ticker.AutoMinorLocator(4))
+        fig.axes[i].set_xlabel("Days (starting from 2020-01-22)")
+        fig.axes[i].ticklabel_format(axis="y", style="scientific", scilimits=(3, 3))
+        fig.axes[i].grid(which="both")
+        fig.axes[i].set_title(f"{title} (thousands)")
+        fig.axes[i].legend()
     fig.show()
 
 
