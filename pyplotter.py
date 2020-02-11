@@ -2,6 +2,7 @@
 
 import sys                       # built-in module
 import time                      # built-in module
+import inspect                   # built-in module
 import warnings                  # built-in module
 import numpy as np               # pip install numpy
 import matplotlib                # pip install matplotlib + apt install python3-tk
@@ -15,6 +16,30 @@ import mpl_toolkits.mplot3d      # noqa pylint: disable=unused-import
 #  P U B L I C   A P I
 #
 ######################################################################################
+
+
+def plot(*plot_args, **kwargs):
+    """
+    Create a Figure, plot the given data to it, and return the Figure. The given
+    keyword arguments are first passed to the Figure constructor and then to the
+    plot() function of fig.axes[0], where fig is the newly created Figure.
+
+    Example:
+       x = np.linspace(0, 2 * np.pi, 100)
+       fig = pyplotter.plot(x, np.sin(x), title="sine", color="red")
+       fig.show()
+    """
+    fig = _plot(*plot_args, **kwargs)
+    return fig
+
+
+def plot3d(*plot_args, **kwargs):
+    """
+    Create a Figure with 3D projection, plot the given data to it, and return the
+    Figure. Keyword arguments are treated as in plot().
+    """
+    fig = _plot(*plot_args, **kwargs, projection="3d")
+    return fig
 
 
 class Figure:
@@ -188,16 +213,33 @@ def _mpl_init():
     matplotlib.rcParams["figure.autolayout"] = True
 
 
+def _plot(*plot_args, projection=None, **kwargs):
+    init_kwargs = _extract_kwargs(Figure.__init__, **kwargs)
+    axes_kwargs = _extract_kwargs(matplotlib.figure.Figure.add_subplot, **kwargs)
+    fig_kwargs = {**init_kwargs, **axes_kwargs}
+    fig = Figure(**fig_kwargs, projection=projection)
+    line_kwargs = _extract_kwargs(matplotlib.lines.Line2D, **kwargs)
+    axes_kwargs = _extract_kwargs(matplotlib.axes.Axes, **kwargs)
+    plot_kwargs = {**line_kwargs, **axes_kwargs}
+    fig.ax.plot(*plot_args, **plot_kwargs)
+    return fig
+
+
+def _extract_kwargs(func, **kwargs):
+    func_kwargs = [k for k, v in inspect.signature(func).parameters.items()]
+    func_dict = {k: kwargs.pop(k) for k in dict(kwargs) if k in func_kwargs}
+    return func_dict
+
+
 def _selftest():
-    # generate sample data
+    # simple one-liners
+    x = np.linspace(-2 * np.pi, 2 * np.pi, 100)
+    plot(x, np.sin(x), x, np.cos(x), title="sin & cos").show()
+    plot(x, np.sin(np.pi * x) / (np.pi * x), title="sinc").show()
+    # subplot layouts
     zline = np.linspace(0, 15, 1000)
     xline = np.sin(zline)
     yline = np.cos(zline)
-    # test the simplest possible figure
-    fig = Figure("Default Figure")
-    fig.axes[0].plot(xline, yline)
-    fig.show()
-    # test subplot layouts
     for nplots in np.arange(2, 9):
         fig = Figure(f"nplots={nplots}", nplots=nplots)
         fig.axes[0].plot(xline, xline)
@@ -208,10 +250,8 @@ def _selftest():
         fig.axes[0].plot(xline, xline)
         fig.axes[-1].plot(xline, zline)
         fig.show()
-    # test 3D plotting
-    fig = Figure("3D plot", projection="3d")
-    fig.axes[0].plot(xline, yline, zline)
-    fig.show()
+    # 3D projection
+    plot3d(xline, yline, zline, title="3D plot", color="black").show()
 
 
 if __name__ == "__main__":
