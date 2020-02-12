@@ -17,13 +17,14 @@ P = 60  # predict this many days from onset
 
 
 DEATHS = [
-    0,
+    6,
+    17,
     18,
     26,
     42,
     56,
     81,
-    106,
+    131,
     133,
     171,
     213,
@@ -35,8 +36,11 @@ DEATHS = [
     565,
     638,
     725,
-    813,
-    910
+    814,
+    910,
+    1018,
+    1117,
+    1368,
 ]
 
 
@@ -46,22 +50,25 @@ CASES = [
     653,
     941,
     1438,
-    2116,
+    2118,
     2886,
-    4690,
+    5578,
     6165,
     8235,
-    9926,
+    9925,
     12038,
     14549,
     17491,
-    20704,
+    20680,
     24630,
-    28353,
+    28344,
     31532,
     34963,
-    37549,
-    40536
+    37592,
+    40574,
+    43141,
+    45206,
+    60328,
 ]
 
 
@@ -84,7 +91,7 @@ def main():
         # prettify the graph with ticks, grids, labels, etc.
         fig.axes[i].xaxis.set_minor_locator(matplotlib.ticker.AutoMinorLocator(4))
         fig.axes[i].yaxis.set_minor_locator(matplotlib.ticker.AutoMinorLocator(4))
-        fig.axes[i].set_xlabel("Days (starting from 2020-01-22)")
+        fig.axes[i].set_xlabel("Days (starting from 2020-01-21)")
         fig.axes[i].ticklabel_format(axis="y", style="scientific", scilimits=(3, 3))
         fig.axes[i].grid(which="both")
         fig.axes[i].set_title(f"{title} (thousands)")
