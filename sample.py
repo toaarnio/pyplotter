@@ -1,7 +1,7 @@
 #!/usr/bin/python3 -B
 
 """
-Demonstrates the usage of PyPlotter by plotting the number of
+Demonstrates the usage of PyPlottr by plotting the number of
 confirmed cases and deaths due to the 2020 corona virus, with
 quadratic polynomial extrapolation into the future.
 """
@@ -9,7 +9,7 @@ quadratic polynomial extrapolation into the future.
 import scipy.optimize  # pip install scipy
 import numpy as np     # pip install numpy
 import matplotlib      # pip install matplotlib + apt install python3-tk
-import pyplotter       # local import
+import pyplottr       # local import
 
 
 N = 14  # predict from this many days of data
@@ -77,7 +77,7 @@ def quadratic(x, a, b, c):
 
 
 def main():
-    fig = pyplotter.Figure(f"Cumulative cases and deaths", ncols=2)
+    fig = pyplottr.Figure(f"Cumulative cases and deaths", ncols=2)
     for i, (title, ydata) in enumerate(zip(["Cases", "Deaths"], [CASES, DEATHS])):
         # extrapolate with a second-degree polynomial
         xdata = np.arange(0, len(ydata))

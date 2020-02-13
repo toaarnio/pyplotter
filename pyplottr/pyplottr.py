@@ -26,7 +26,7 @@ def plot(*plot_args, **kwargs):
 
     Example:
        x = np.linspace(0, 2 * np.pi, 100)
-       fig = pyplotter.plot(x, np.sin(x), title="sine", color="red")
+       fig = pyplottr.plot(x, np.sin(x), title="sine", color="red")
        fig.show()
     """
     fig = _plot(*plot_args, **kwargs)
@@ -109,7 +109,7 @@ class Figure:
         self.fig.canvas.mpl_connect("key_press_event", self._fig_event_keypress)
         self.fig.canvas.mpl_connect("motion_notify_event", self._fig_event_mousemove)
         self.fig.canvas.mpl_connect("button_press_event", self._fig_event_mouseclick)
-        warnings.filterwarnings("ignore", category=UserWarning, module="pyplotter")
+        warnings.filterwarnings("ignore", category=UserWarning, module="pyplottr")
         return self.axes[0]  # return the first/only subplot
 
     def savefig(self, *args, **kwargs):
