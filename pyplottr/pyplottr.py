@@ -1,4 +1,7 @@
 #!/usr/bin/python3 -B
+"""
+A convenience wrapper for Matplotlib.
+"""
 
 import sys                       # built-in module
 import time                      # built-in module
@@ -42,7 +45,55 @@ def plot3d(*plot_args, **kwargs):
     return fig
 
 
-class Figure:
+class DummyFigure:  # pylint: disable=missing-function-docstring
+    """
+    Create a mock Figure object that behaves superficially the same as a real Figure,
+    but doesn't actually do or contain anything. This allows the user to switch all
+    plotting functionality on/off by changing just a single line of code, rather than
+    having to comment out a bunch of lines.
+    """
+    def __init__(self, nrows=1, ncols=1, nplots=None, layout=None, **_kwargs):
+        self.exit_request = True
+        self.ax = self.Axes()
+        num_axes = nrows * ncols
+        num_axes = max(num_axes, int(nplots or 0))
+        num_axes = max(num_axes, int(np.max(np.array(layout)) or 0))
+        self.axes = [self.ax] * num_axes
+    def savefig(self, *args, **kwargs):
+        pass
+    def show(self, *args, **kwargs):
+        pass
+    def events(self, *args, **kwargs):
+        pass
+    def redraw(self, *args, **kwargs):
+        pass
+    def move(self, *args, **kwargs):
+        pass
+    def resize(self, *args, **kwargs):
+        pass
+    def close(self, *args, **kwargs):
+        pass
+
+    class Axes:  # pylint: disable=missing-class-docstring
+        def plot(self, *args, **kwargs):
+            pass
+        def plot3d(self, *args, **kwargs):
+            pass
+        def imshow(self, *args, **kwargs):
+            pass
+        def scatter(self, *args, **kwargs):
+            pass
+        def set_xlim(self, *args, **kwargs):
+            pass
+        def set_ylim(self, *args, **kwargs):
+            pass
+        def grid(self, *args, **kwargs):
+            pass
+        def legend(self, *args, **kwargs):
+            pass
+
+
+class Figure:  # pylint: disable=missing-class-docstring, too-many-arguments
 
     def __init__(self, title="Figure", nrows=1, ncols=1, nplots=None, layout=None, **subplot_kwargs):
         """
