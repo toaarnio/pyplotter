@@ -83,6 +83,8 @@ class DummyFigure:  # pylint: disable=missing-function-docstring
             pass
         def scatter(self, *args, **kwargs):
             pass
+        def set_title(self, *args, **kwargs):
+            pass
         def set_xlim(self, *args, **kwargs):
             pass
         def set_ylim(self, *args, **kwargs):
