@@ -76,6 +76,8 @@ class DummyFigure:  # pylint: disable=missing-function-docstring
         pass
 
     class Axes:  # pylint: disable=missing-class-docstring
+        def bar(self, *args, **kwargs):
+            pass
         def plot(self, *args, **kwargs):
             pass
         def plot3d(self, *args, **kwargs):
@@ -90,13 +92,27 @@ class DummyFigure:  # pylint: disable=missing-function-docstring
             pass
         def set_ylim(self, *args, **kwargs):
             pass
-        def set_xlabel(self, *args, **kwards):
+        def set_xlabel(self, *args, **kwargs):
             pass
-        def set_ylabel(self, *args, **kwards):
+        def set_ylabel(self, *args, **kwargs):
+            pass
+        def set_xticks(self, *args, **kwargs):
+            pass
+        def set_yticks(self, *args, **kwargs):
+            pass
+        def set_xticklabels(self, *args, **kwargs):
+            pass
+        def set_yticklabels(self, *args, **kwargs):
+            pass
+        def set_facecolor(self, *args, **kwargs):
             pass
         def grid(self, *args, **kwargs):
             pass
         def legend(self, *args, **kwargs):
+            pass
+        def add_patch(self, *args, **kwargs):
+            pass
+        def autoscale_view(self, *args, **kwargs):
             pass
 
 
