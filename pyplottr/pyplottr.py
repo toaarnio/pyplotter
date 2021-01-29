@@ -307,8 +307,8 @@ def _extract_kwargs(func, **kwargs):
 def _selftest():
     # simple one-liners
     x = np.linspace(-2 * np.pi, 2 * np.pi, 100)
-    plot(x, np.sin(x), x, np.cos(x), title="sin & cos").show()
-    plot(x, np.sin(np.pi * x) / (np.pi * x), title="sinc").show()
+    plot(x, np.sin(x), x, np.cos(x), title="sin & cos")
+    plot(x, np.sin(np.pi * x) / (np.pi * x), title="sinc")
     # subplot layouts
     zline = np.linspace(0, 15, 1000)
     xline = np.sin(zline)
@@ -317,14 +317,14 @@ def _selftest():
         fig = Figure(f"nplots={nplots}", nplots=nplots)
         fig.axes[0].plot(xline, xline)
         fig.axes[-1].plot(xline, zline)
-        fig.show()
     for nrows, ncols in [[2, 1], [1, 3], [2, 4]]:
         fig = Figure(f"nrows={nrows}, ncols={ncols}", nrows=nrows, ncols=ncols)
         fig.axes[0].plot(xline, xline)
         fig.axes[-1].plot(xline, zline)
-        fig.show()
     # 3D projection
-    plot3d(xline, yline, zline, title="3D plot", color="black").show()
+    fig = plot3d(xline, yline, zline, title="3D plot", color="black")
+    # closing the last window closes them all
+    fig.show()
 
 
 if __name__ == "__main__":
