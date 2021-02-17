@@ -53,13 +53,23 @@ class DummyFigure:  # pylint: disable=missing-function-docstring
     plotting functionality on/off by changing just a single line of code, rather than
     having to comment out a bunch of lines.
     """
-    def __init__(self, nrows=1, ncols=1, nplots=None, layout=None, **_kwargs):
-        self.exit_request = True
-        self.ax = self.Axes()
+    def __init__(self, title="DummyFigure", nrows=1, ncols=1, nplots=None, layout=None, **_kwargs):
         num_axes = nrows * ncols
         num_axes = max(num_axes, int(nplots or 0))
         num_axes = max(num_axes, int(np.max(np.array(layout)) or 0))
+        self.ax = self.Axes()
         self.axes = [self.ax] * num_axes
+        self.current_subplot = None
+        self.exit_request = False
+        self.fig = None
+        self.mousex = None
+        self.mousey = None
+        self.clickx = None
+        self.clicky = None
+        self.key = None
+        self.valid_keys = "0123456789abcdefghijklmnopqrstuvwxyz"
+        self.key_state = [False] * len(self.valid_keys)
+        self.fast_redraw = False
     def savefig(self, *args, **kwargs):
         pass
     def show(self, *args, **kwargs):
@@ -163,8 +173,8 @@ class Figure:  # pylint: disable=missing-class-docstring, too-many-arguments
         if layout is None:  # generate layout if not provided by user
             nplots = nplots or (nrows * ncols)  # set default value for nplots if not provided
             if nplots > nrows * ncols:  # derive nrows & ncols if only nplots is provided
-                nrows = np.clip(1, 2, np.ceil(nplots / 2)).astype(np.int32)
-                ncols = np.ceil(nplots / nrows).astype(np.int32)
+                nrows = np.clip(1, 2, np.ceil(nplots / 2)).astype(int)
+                ncols = np.ceil(nplots / nrows).astype(int)
             layout = np.arange(nrows * ncols).reshape(nrows, ncols)
             layout = np.clip(layout, 0, nplots - 1)  # stretch the last subplot if not evenly divided
         layout = np.array(layout)
