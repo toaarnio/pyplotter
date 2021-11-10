@@ -1,4 +1,5 @@
 #!/usr/bin/python3 -B
+
 """
 A convenience wrapper for Matplotlib.
 """
@@ -142,8 +143,8 @@ class Figure:  # pylint: disable=missing-class-docstring, too-many-arguments
         if layout is None:  # generate layout if not provided by user
             nplots = nplots or (nrows * ncols)  # set default value for nplots if not provided
             if nplots > nrows * ncols:  # derive nrows & ncols if only nplots is provided
-                nrows = np.clip(1, 2, np.ceil(nplots / 2)).astype(np.int)
-                ncols = np.ceil(nplots / nrows).astype(np.int)
+                nrows = np.clip(1, 2, np.ceil(nplots / 2)).astype(np.int32)
+                ncols = np.ceil(nplots / nrows).astype(np.int32)
             layout = np.arange(nrows * ncols).reshape(nrows, ncols)
             layout = np.clip(layout, 0, nplots - 1)  # stretch the last subplot if not evenly divided
         layout = np.array(layout)
@@ -249,7 +250,6 @@ class Figure:  # pylint: disable=missing-class-docstring, too-many-arguments
 def _mpl_init():
     pp.ion()  # must enable interactive mode before creating any figures
     # free up some hotkeys for our own use: a, s, f, c, v, h, g, G, k, L, l, o, p, W, Q
-    matplotlib.rcParams["keymap.all_axes"] = ''  # a
     matplotlib.rcParams["keymap.save"] = 'ctrl+s'  # s
     matplotlib.rcParams["keymap.fullscreen"] = 'ctrl+f'  # f
     matplotlib.rcParams["keymap.back"] = 'backspace'  # c
