@@ -90,6 +90,10 @@ class DummyFigure:  # pylint: disable=missing-function-docstring
             pass
         def set_ylim(self, *args, **kwargs):
             pass
+        def set_xlabel(self, *args, **kwards):
+            pass
+        def set_ylabel(self, *args, **kwards):
+            pass
         def grid(self, *args, **kwargs):
             pass
         def legend(self, *args, **kwargs):
