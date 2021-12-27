@@ -2,8 +2,7 @@ deps:
 	pip3 install -r requirements.txt
 
 lint:
-	flake8 pyplottr/*
-	pylint pyplottr/*
+	prospector pyplottr/*
 
 test:
 	python3 setup.py test

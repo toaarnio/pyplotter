@@ -46,7 +46,7 @@ def plot3d(*plot_args, **kwargs):
     return fig
 
 
-class DummyFigure:  # pylint: disable=missing-function-docstring
+class DummyFigure:  # pylint: disable=missing-function-docstring, unused-argument
     """
     Create a mock Figure object that behaves superficially the same as a real Figure,
     but doesn't actually do or contain anything. This allows the user to switch all
@@ -126,7 +126,7 @@ class DummyFigure:  # pylint: disable=missing-function-docstring
             pass
 
 
-class Figure:  # pylint: disable=missing-class-docstring, too-many-arguments
+class Figure:  # pylint: disable=missing-class-docstring
 
     def __init__(self, title="Figure", nrows=1, ncols=1, nplots=None, layout=None, **subplot_kwargs):
         """
@@ -178,7 +178,7 @@ class Figure:  # pylint: disable=missing-class-docstring, too-many-arguments
             layout = np.arange(nrows * ncols).reshape(nrows, ncols)
             layout = np.clip(layout, 0, nplots - 1)  # stretch the last subplot if not evenly divided
         layout = np.array(layout)
-        grid = matplotlib.gridspec.GridSpec(*layout.shape)  # pylint: disable=not-an-iterable
+        grid = matplotlib.gridspec.GridSpec(*layout.shape)
         axes = np.array(layout, dtype=object)
         self.axes = np.array(range(layout.max() + 1), dtype=object)
         for idx in np.unique(layout[layout >= 0]):
